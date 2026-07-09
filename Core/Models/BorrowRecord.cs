@@ -7,6 +7,7 @@ namespace Core.Models
 {
     public class BorrowRecord
     {
+        // TODO validations
         public string BorrowID { get; set; }
         public int UserID { get; set; }
         public string ISBN { get; set; }
