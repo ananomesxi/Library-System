@@ -15,5 +15,7 @@ namespace Core.Interfaces
         void UpdateUser (User user);
         void DeleteUser (int id);
         void SaveChanges(List<User> users);
+        User GetLastLoggedUser();
     }
 }
+ 

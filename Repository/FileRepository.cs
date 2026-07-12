@@ -1,4 +1,5 @@
-﻿using Core.Interfaces;
+﻿using Core.Exceptions;
+using Core.Interfaces;
 using Core.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text.Json;
 
 namespace Repository
 {
-    internal class FileRepository : IUserRepository, IBookRepository
+    public class FileRepository : IUserRepository //, IBookRepository
     {
         // აქ იუზერის და წიგნის მეთოდები ერთად დავაიმპლემენტირე თუ გამოდგება ასე... შეიძლება შევცვალო 
 
@@ -17,22 +18,33 @@ namespace Repository
 
         public void AddUser(User user)
         {
+            List<User> users = GetAllUsers();
+            user.Id = users.Count() + 1;
             string line = JsonSerializer.Serialize(user); // User user-ს ვაქცევთ string line-ად
             File.AppendAllLines(_usersPath, new[] {line}); // ახალი ხაზი მივაწეროთ ფაილში
         }
-
+        
         public void DeleteUser(int id)
         {
-            // TODO
+            List<User> users = GetAllUsers();
+            User user = GetUserById(id);
+            if (user == null)
+            {
+                throw new UserIdDoesNotExist();
+            }
+            users.Remove(user);
+            SaveChanges(users);
+            
         }
 
         public List<User> GetAllUsers()
         {
-            string[] lines = File.ReadAllLines(_usersPath);
             if (!File.Exists(_usersPath))
             {
                 return new List<User>(); // თუ ფაილი ვერ იპოვა ახალს შექმნის და დააბრუნებს
             }
+            string[] lines = File.ReadAllLines(_usersPath);
+            
 
             List<User> users = new List<User>();
             foreach (string line in lines)
@@ -41,10 +53,17 @@ namespace Repository
                 {
                     continue;
                 }
-                User user = JsonSerializer.Deserialize<User>(line); // string line-ს ვაქცევთ User user-ად
+                User user = JsonSerializer.Deserialize<ClientUser>(line); // string line-ს ვაქცევთ User user-ად
                 users.Add(user);
             }
             return users;
+        }
+
+        public User GetLastLoggedUser()
+        {
+            List<User> users = GetAllUsers();
+            User user = users.OrderBy(u => u.LastLogin).LastOrDefault();
+            return user;
         }
 
         public User GetUserByEmail(string email)

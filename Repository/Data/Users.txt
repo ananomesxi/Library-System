@@ -1,1 +1,1 @@
-﻿
+{"Id":1,"Username":"Anano","Email":"mesxi032@gmail.com","Password":"$2a$11$cclgHK5wueqwqu6uH2AtO.P58.szBS4pM8XyDur.EZzHrCYoPhe9.","Role":0,"VerificationCode":"1212","IsVerified":true,"LastLogin":null}

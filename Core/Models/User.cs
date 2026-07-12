@@ -30,7 +30,8 @@ namespace Core.Models
         public string Password { get; set; }
         public UserRole Role { get; set; } = UserRole.Client;
         public string VerificationCode { get; set; }
-        public bool IsVerified { get; set; }
+        public bool IsVerified { get; set; } = false;
+        public DateTime? LastLogin {  get; set; }
 
 
 

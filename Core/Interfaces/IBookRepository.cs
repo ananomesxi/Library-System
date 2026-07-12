@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Core.Interfaces
 {
-    ipublic class IBookRepository
+    public class IBookRepository
     {
         // Book-ის ფაილის მეთოდები
         //TODO
