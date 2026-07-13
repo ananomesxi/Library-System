@@ -4,6 +4,8 @@ using Core.Interfaces;
 using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Application.Services
@@ -37,7 +39,7 @@ namespace Application.Services
             _userRepository.AddUser(newClientUser);
         }
 
-
+        
 
     }
 }

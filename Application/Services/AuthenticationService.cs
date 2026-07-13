@@ -4,6 +4,8 @@ using Core.Interfaces;
 using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Application.Services
@@ -18,6 +20,8 @@ namespace Application.Services
             _userRepository = userRepository;
             _emailService = emailService;
         }
+
+        private readonly string _loginHistoryPath = "D:\\Library System\\Core\\Logging\\LoginHistory.txt";
         public User LoginUser(string email, string password)
         {
             User user = _userRepository.GetUserByEmail(email);
@@ -27,6 +31,8 @@ namespace Application.Services
                 {
                     user.LastLogin = DateTime.Now;
                     _userRepository.UpdateUser(user);
+                    
+                    File.AppendAllLines(_loginHistoryPath, new[] { $"{user.Username} logged in at {user.LastLogin} from {GetUserIp()}" });
                     return user;
                 }
             }
@@ -79,6 +85,19 @@ namespace Application.Services
             User user = _userRepository.GetUserByEmail(email);
             user.LastLogin = null;
             _userRepository.UpdateUser(user);
+        }
+
+        public string GetUserIp()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return string.Empty;
         }
     }
 }
