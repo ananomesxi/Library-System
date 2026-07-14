@@ -24,7 +24,7 @@ namespace UI
             //userService.VerifyUser("mesxi032@gmail.com", "2050");
             //User authUser = userRepository.GetLastLoggedUser();
             // Console.WriteLine(authUser.Username);
-            authenticationService.LogoutUser("mesxi032@gmail.com");
+           // authenticationService.LogoutUser("mesxi032@gmail.com");
         }
     }
 }
