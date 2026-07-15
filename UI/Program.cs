@@ -10,7 +10,7 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            IUserRepository userRepository = new FileRepository();
+            IUserRepository userRepository = new UserRepository();
             IEmailService emailService = new EmailService();
 
             IUserService userService = new UserService(userRepository);

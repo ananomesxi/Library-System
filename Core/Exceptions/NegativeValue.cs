@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Core.Exceptions
 {
-    public class NullOrWhiteSpace : Exception
+    internal class NegativeValue : Exception
     {
-        public NullOrWhiteSpace() : base("Can not be null or empty.")
+        public NegativeValue() : base("Value can not be negative.")
         {
         }
     }

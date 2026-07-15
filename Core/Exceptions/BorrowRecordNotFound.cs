@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Core.Exceptions
 {
-    public class NullOrWhiteSpace : Exception
+    public class BorrowRecordNotFound : Exception
     {
-        public NullOrWhiteSpace() : base("Can not be null or empty.")
+        public BorrowRecordNotFound() : base("Borrow record not found.")
         {
+
         }
     }
 }

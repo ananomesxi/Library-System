@@ -8,11 +8,9 @@ using System.Text.Json;
 
 namespace Repository
 {
-    public class FileRepository : IUserRepository //, IBookRepository
+    public class UserRepository : IUserRepository
     {
-        // აქ იუზერის და წიგნის მეთოდები ერთად დავაიმპლემენტირე თუ გამოდგება ასე... შეიძლება შევცვალო 
-
-        #region IUserRepository
+        
 
         private readonly string _usersPath = "D:\\Library System\\Repository\\Data\\Users.txt"; // ამას პროექტში როგორც კეთდება ისე გადავაკეთებ მერე.
 
@@ -49,7 +47,7 @@ namespace Repository
             List<User> users = new List<User>();
             foreach (string line in lines)
             {
-                if (string.IsNullOrEmpty(line)) // ხაზი შეიძლება გამოტოვებული/ცარიელი იყოს
+                if (string.IsNullOrWhiteSpace(line)) // ხაზი შეიძლება გამოტოვებული/ცარიელი იყოს
                 {
                     continue;
                 }
@@ -97,8 +95,7 @@ namespace Repository
             SaveChanges(users);
         }
 
-        #endregion
+        
 
-        // წიგნისთვის ჯერ არ დამიწერია, მაგრამ მალე დავამატებ აუცილებლად
     }
 }

@@ -7,7 +7,6 @@ namespace Core.Interfaces
 {
     public interface IUserRepository
     {
-        // User-ის ფაილის მეთოდები
         List<User> GetAllUsers();
         User GetUserByEmail(string email);
         User GetUserById(int id);

@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Core.Exceptions
 {
-    public class NullOrWhiteSpace : Exception
+    public class BookNotFound : Exception
     {
-        public NullOrWhiteSpace() : base("Can not be null or empty.")
+        public BookNotFound() : base("Book not found.")
         {
+
         }
     }
 }

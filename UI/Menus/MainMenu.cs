@@ -73,7 +73,7 @@ namespace UI.Menus
 
             if (user is ClientUser)
             {
-                ClientMenu clientMenu = new ClientMenu();
+                ClientMenu clientMenu = new ClientMenu(_authenticationService, (ClientUser)user);
                 clientMenu.Show();
             }
             else if (user is AdminUser)
