@@ -38,7 +38,8 @@ namespace Application.Services
 
             _userRepository.AddUser(newClientUser);
         }
-
+        
+        
         
 
     }

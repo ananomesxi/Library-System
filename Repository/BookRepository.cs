@@ -69,22 +69,26 @@ namespace Repository
         {
             List<Book> books = GetAllBooks();
             Book book = books.FirstOrDefault(b => b.ISBN == isbn);
-            if (book == null)
-            {
-                throw new BookNotFound();
-            }
+            
             return book;
         }
 
-        public Book GetBookByTitle(string title)
+        public List<Book> GetBookByTitle(string title)
         {
             List<Book> books = GetAllBooks();
-            Book book = books.FirstOrDefault(b => b.Title == title);
-            if (book == null)
-            {
-                throw new BookNotFound();
-            }
-            return book;
+
+            List<Book> validBooks = books.Where(book => book.Title.Equals(title)).ToList();
+
+            return validBooks;
+        }
+
+        public List<Book> GetBookByAuthor(string author)
+        {
+            List<Book> books = GetAllBooks();
+
+            List<Book> validBooks = books.Where(book => book.Author.Equals(author)).ToList();
+           
+            return validBooks;
         }
 
         public void SaveChanges(List<Book> books)

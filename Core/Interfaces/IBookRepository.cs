@@ -12,9 +12,10 @@ namespace Core.Interfaces
         void DeleteBook(string isbn);
         void UpdateBookQuantity(string isbn, int newQuantity);
         Book GetBookByISBN(string isbn);
-        Book GetBookByTitle(string title);
-        void SaveChanges(List<Book> books);
+        List<Book> GetBookByTitle(string title);
+        List<Book> GetBookByAuthor (string author);
         bool BookExists (string isbn);
+        public void SaveChanges(List<Book> books);
 
     }
 }

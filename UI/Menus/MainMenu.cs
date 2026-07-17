@@ -10,13 +10,16 @@ namespace UI.Menus
 {
     public class MainMenu
     {
-        private readonly IUserService _userService;
         private readonly IAuthenticationService _authenticationService;
-
-        public MainMenu(IUserService userService, IAuthenticationService authenticationService)
+        private readonly ClientUser _currentClient;
+        private readonly IBookService _bookService;
+        private readonly IBorrowService _borrowService;
+        public MainMenu(IAuthenticationService authenticationService, IBookService bookService, IBorrowService borrowService, ClientUser currentClient)
         {
-            _userService = userService;
             _authenticationService = authenticationService;
+            _bookService = bookService;
+            _borrowService = borrowService;
+            _currentClient = currentClient;
         }
 
         public void Show()
@@ -73,7 +76,7 @@ namespace UI.Menus
 
             if (user is ClientUser)
             {
-                ClientMenu clientMenu = new ClientMenu(_authenticationService, (ClientUser)user);
+                ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, (ClientUser)user);
                 clientMenu.Show();
             }
             else if (user is AdminUser)

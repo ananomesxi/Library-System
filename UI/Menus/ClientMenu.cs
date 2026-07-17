@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Services;
 using Core.Exceptions;
 using Core.Models;
 using System;
@@ -9,13 +10,16 @@ namespace UI.Menus
 {
     public class ClientMenu
     {
-       
+
         private readonly IAuthenticationService _authenticationService;
         private readonly ClientUser _currentClient;
-
-        public ClientMenu(IAuthenticationService authenticationService, ClientUser currentClient)
+        private readonly IBookService _bookService;
+        private readonly IBorrowService _borrowService;
+        public ClientMenu(IAuthenticationService authenticationService, IBookService bookService, IBorrowService borrowService, ClientUser currentClient)
         {
             _authenticationService = authenticationService;
+            _bookService = bookService;
+            _borrowService = borrowService;
             _currentClient = currentClient;
         }
 
@@ -23,7 +27,7 @@ namespace UI.Menus
         {
             while (true)
             {
-                Console.WriteLine("| ADMIN |");
+                Console.WriteLine("| Client |");
                 Console.WriteLine("1. Show all books");
                 Console.WriteLine("2. Find a book");
                 Console.WriteLine("3. Borrow a book");
@@ -42,28 +46,33 @@ namespace UI.Menus
                 {
                     case "1":
                         {
+                            _bookService.ShowAllBooks();
                             break;
                         }
                     case "2":
                         {
+                            _bookService.FindABook();
                             break;
                         }
                     case "3":
                         {
+                            _borrowService.BorrowRequest(_currentClient.Id);
                             break;
                         }
                     case "4":
                         {
+                            _borrowService.ReturnABook(_currentClient.Id);
                             break;
                         }
                     case "5":
                         {
+                            _borrowService.ShowBorrowedBooks(_currentClient.Id, true);
                             break;
                         }
                     case "6":
                         {
                             Logout();
-                            break;
+                            return;
                         }
                     default:
                         {
