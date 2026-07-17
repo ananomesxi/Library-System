@@ -51,13 +51,13 @@ namespace Application.Services
         {
             List <BorrowRecord> borrowedBooks = _borrowRepository.GetAllBorrowRecords().Where(b => b.UserID == userId && 
                                                                                                    b.Status ==BorrowStatus.Approved).ToList();
-
-            bool hasBooks = true;
-            ShowBorrowedBooks (userId, hasBooks);
-            if (!hasBooks)
+            if (borrowedBooks.Count == 0)
             {
+                Console.WriteLine("You have no borrowed books.");
                 return;
             }
+            ShowBorrowedBooks (userId);
+            
             Console.WriteLine("Choose a book to return: ");
 
             bool isValid = int.TryParse(Console.ReadLine(), out int userChoice);
@@ -74,14 +74,14 @@ namespace Application.Services
             Console.WriteLine("Your book has been returned.");
         }
 
-        public void ShowBorrowedBooks(int userId, bool hasBooks)
+        public void ShowBorrowedBooks(int userId)
         {
             List<BorrowRecord> borrowedBooks = _borrowRepository.GetAllBorrowRecords().Where(b => b.UserID == userId &&
                                                                                                   b.Status == BorrowStatus.Approved).ToList();
             if (borrowedBooks.Count == 0)
             {
                 Console.WriteLine("You have no borrowed books.");
-                hasBooks = false;  return;
+                return;
             }
             Console.WriteLine("Your borrowed books:");
 

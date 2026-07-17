@@ -9,7 +9,7 @@ namespace Application.Interfaces
     {
         void BorrowRequest(int userId); 
         void ReturnABook(int userId);
-        void ShowBorrowedBooks(int userId, bool hasBooks);
+        void ShowBorrowedBooks(int userId);
 
     }
 }

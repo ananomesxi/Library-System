@@ -66,7 +66,7 @@ namespace UI.Menus
                         }
                     case "5":
                         {
-                            _borrowService.ShowBorrowedBooks(_currentClient.Id, true);
+                            _borrowService.ShowBorrowedBooks(_currentClient.Id);
                             break;
                         }
                     case "6":
