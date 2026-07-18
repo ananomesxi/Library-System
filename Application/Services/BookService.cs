@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Application.Services
 {
@@ -116,12 +117,76 @@ namespace Application.Services
             return validBooks;
             
         }
+
         public List<Book> FindABookWithAuthor()
         {
             Console.Write("Enter author: ");
             string author = Console.ReadLine();
             List<Book> validBooks = _bookRepository.GetBookByAuthor(author);
             return validBooks;
+        }
+
+        public void AddBook ()
+        {
+            List<Book> books = _bookRepository.GetAllBooks();
+            string isbn = books.Count == 0 ? "1" : (int.Parse(books.Max(x => x.ISBN)) + 1).ToString();
+
+            Console.Write("Enter Title: ");
+            string title = Console.ReadLine();
+
+            Console.Write("Enter Author: ");
+            string author = Console.ReadLine();
+
+            Console.Write("Enter Quantity: ");
+            bool isValid = int.TryParse(Console.ReadLine(), out int quantity);
+            if (!isValid)
+            {
+                throw new FormatException();
+            }
+            if (_bookRepository.BookExists(isbn))
+            {
+                throw new BookExists();
+            }
+            Book book = new Book
+            {
+                ISBN = isbn,
+                Title = title,
+                Author = author,
+                Quantity = quantity
+            };
+
+            _bookRepository.AddBook(book);
+            Console.WriteLine("Book has been added.");
+        }
+
+        public void RemoveBook ()
+        {
+            Console.Write("Enter ISBN: ");
+            string isbn = Console.ReadLine();
+            if (!_bookRepository.BookExists(isbn))
+            {
+                throw new BookNotFound();
+            }
+            _bookRepository.DeleteBook(isbn);
+            Console.WriteLine("The book has been removed.");
+        }
+
+        public void ManageBookQuantity()
+        {
+            Console.Write("Enter ISBN: ");
+            string isbn = Console.ReadLine();
+            if (!_bookRepository.BookExists(isbn))
+            {
+                throw new BookNotFound();
+            }
+            Console.WriteLine("Enter Updated quantity: ");
+            bool isValid = int.TryParse(Console.ReadLine(), out int quantity);
+            if (!isValid)
+            {
+                throw new FormatException();
+            }
+            _bookRepository.UpdateBookQuantity(isbn, quantity);
+            Console.WriteLine("Book quantity has been updated.");
         }
     }
 }

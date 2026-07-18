@@ -13,5 +13,9 @@ namespace Core.Interfaces
         List<BorrowRecord> GetAllBorrowRecords();
         void SaveChanges(List<BorrowRecord> borrowRecords);
         void UpdateBorrowStatus(int borrowID, BorrowStatus borrowStatus);
+        BorrowRecord GetBorrowRequestByBorrowID(int borrowId);
+        List<BorrowRecord> GetOverdueBooks();
+
+
     }
 }

@@ -13,6 +13,7 @@ namespace Core.Models
         private int _userID;
         private string _isbn;
 
+
         public int BorrowID
         {
             get
@@ -60,6 +61,7 @@ namespace Core.Models
         }
         public DateTime ReturnDate { get; set; }
         public BorrowStatus Status { get; set; }
+
 
     }
 }

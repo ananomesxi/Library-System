@@ -73,5 +73,18 @@ namespace Repository
             SaveChanges(borrowRecords);
         }
 
+        public BorrowRecord GetBorrowRequestByBorrowID(int borrowId)
+        {
+            List<BorrowRecord> borrowRecords = GetAllBorrowRecords();
+            BorrowRecord borrowRecord = borrowRecords.FirstOrDefault(b => b.BorrowID == borrowId);
+
+            return borrowRecord;
+        }
+
+        public List<BorrowRecord> GetOverdueBooks()
+        {
+            List<BorrowRecord> overdue = GetAllBorrowRecords().Where(o => o.Status == BorrowStatus.Approved && o.ReturnDate.Date < DateTime.Now.Date).ToList();
+            return overdue;
+        }
     }
 }

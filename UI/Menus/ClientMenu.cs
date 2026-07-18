@@ -15,6 +15,8 @@ namespace UI.Menus
         private readonly ClientUser _currentClient;
         private readonly IBookService _bookService;
         private readonly IBorrowService _borrowService;
+        private readonly IClientService _clientService;
+
         public ClientMenu(IAuthenticationService authenticationService, IBookService bookService, IBorrowService borrowService, ClientUser currentClient)
         {
             _authenticationService = authenticationService;
@@ -33,7 +35,8 @@ namespace UI.Menus
                 Console.WriteLine("3. Borrow a book");
                 Console.WriteLine("4. Return a book");
                 Console.WriteLine("5. Show my books");
-                Console.WriteLine("6. Logout");
+                Console.WriteLine("6. View my fine");
+                Console.WriteLine("7. Logout");
                 Console.Write("Choose an option: ");
 
                 string userChoice = Console.ReadLine();
@@ -71,7 +74,12 @@ namespace UI.Menus
                         }
                     case "6":
                         {
-                            Logout();
+                            _clientService.ViewFine(_currentClient);
+                            return;
+                        }
+                    case "7":
+                        {
+                            _authenticationService.LogoutUser(_currentClient.Email);
                             return;
                         }
                     default:
@@ -82,10 +90,8 @@ namespace UI.Menus
             }
         }
 
-        public void Logout()
-        {
-            Console.WriteLine("Logging out.");
-            _authenticationService.LogoutUser(_currentClient.Email);
-        }
+      
+
+        
     }
 }

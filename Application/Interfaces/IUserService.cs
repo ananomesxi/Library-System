@@ -8,6 +8,9 @@ namespace Application.Interfaces
     public interface IUserService
     {
         void RegisterUser(string username, string email, string password);
-        
+        void ShowAllUsers();
+        void RemoveUser();
+
+
     }
 }

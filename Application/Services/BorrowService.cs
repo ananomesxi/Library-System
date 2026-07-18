@@ -14,15 +14,24 @@ namespace Application.Services
         private readonly IBookService _bookService;
         private readonly IBorrowRepository _borrowRepository;
         private readonly IBookRepository _bookRepository;
-        public BorrowService (IBookService bookService, IBorrowRepository borrowRepository, IBookRepository bookRepository)
+        private readonly IUserRepository _userRepository;
+        public BorrowService (IBookService bookService, IBorrowRepository borrowRepository, IBookRepository bookRepository, IUserRepository userRepository)
         {
             _bookService = bookService;
             _borrowRepository = borrowRepository;
             _bookRepository = bookRepository;
+            _userRepository = userRepository;
         }
 
         public void BorrowRequest(int userId)
         {
+            User user = _userRepository.GetUserById(userId);
+
+            if (user is ClientUser client && client.Fine > 0)
+            {
+                Console.WriteLine("You cannot borrow a book until your fine is paid.");
+                return;
+            }
             Book book = _bookService.FindABookWithISBN();
             if (book == null)
             {

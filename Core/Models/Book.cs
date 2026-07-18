@@ -64,6 +64,10 @@ namespace Core.Models
             }
             set
             {
+                if (value == null)
+                {
+                    throw new ArgumentNullException();
+                }
                 if (value < 0)
                 {
                     throw new NegativeValue();

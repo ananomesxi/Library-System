@@ -11,8 +11,10 @@ namespace Application.Interfaces
         void FindABook();
         Book FindABookWithISBN();
         List<Book> FindABookWithTitle();
-
         List<Book> FindABookWithAuthor();
+        void AddBook();
+        void RemoveBook();
+        void ManageBookQuantity();
 
 
     }

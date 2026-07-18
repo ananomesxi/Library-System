@@ -22,6 +22,7 @@ namespace Application.Services
         }
 
         private readonly string _loginHistoryPath = "D:\\Library System\\Core\\Logging\\LoginHistory.txt";
+
         public User LoginUser(string email, string password)
         {
             User user = _userRepository.GetUserByEmail(email);
@@ -38,7 +39,6 @@ namespace Application.Services
             }
             throw new Exception("Invalid email or not verified.");
         }
-
         
         public bool VerifyUser(string email, string verificationCode)
         {

@@ -11,17 +11,19 @@ namespace UI.Menus
     public class MainMenu
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly ClientUser _currentClient;
         private readonly IBookService _bookService;
         private readonly IBorrowService _borrowService;
         private readonly IUserService _userService;
-        public MainMenu(IAuthenticationService authenticationService, IBookService bookService, IBorrowService borrowService,IUserService userService, ClientUser currentClient)
+        private readonly IClientService _clientService;
+        private readonly IAdminService _adminService;
+        public MainMenu(IAuthenticationService authenticationService, IBookService bookService, IBorrowService borrowService,IUserService userService, IClientService clientService, IAdminService adminService)
         {
             _authenticationService = authenticationService;
             _bookService = bookService;
             _borrowService = borrowService;
-            _currentClient = currentClient;
+            _clientService = clientService;
             _userService = userService;
+            _adminService = adminService;
         }
 
         public void Show()
@@ -75,15 +77,16 @@ namespace UI.Menus
             string inputPassword = Console.ReadLine();
 
             User user = _authenticationService.LoginUser(inputEmail, inputPassword);
-
+           
             if (user is ClientUser)
             {
+                _clientService.UpdateClientFine((ClientUser)user);
                 ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, _borrowService, (ClientUser)user);
                 clientMenu.Show();
             }
-            else if (user is AdminUser)
+            else 
             {
-                AdminMenu adminMenu = new AdminMenu();
+                AdminMenu adminMenu = new AdminMenu(_authenticationService, _bookService, _adminService, _userService, (AdminUser)user);
                 adminMenu.Show();
             }
         }
@@ -103,5 +106,6 @@ namespace UI.Menus
 
             Console.WriteLine("Registration has been completed successfully.");
         }
+        
     }
 }

@@ -106,7 +106,6 @@ namespace Repository
             {
                 throw new BookNotFound();
             }
-
             book.Quantity = newQuantity;
             SaveChanges(books);
         }
