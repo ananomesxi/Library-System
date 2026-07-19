@@ -1,1 +1,2 @@
 {"Id":1,"Username":"admin","Email":"admin@gmail.com","Password":"$2a$11$q8iJ46SHkOsxLkfpeEx93OpkAlcVoumLsoO.q2g0qyWDi.CIjlC4K","Role":1,"VerificationCode":null,"IsVerified":true,"LastLogin":null,"UserType":"AdminUser"}
+{"Fine":0,"Id":2,"Username":"Ana","Email":"mesxi032@gmail.com","Password":"$2a$11$A9P.c4AVEaHWUH8o7OA2yeXQZa9agBlrbc.Nui7CyScyl/YqrZtum","Role":0,"VerificationCode":"6828","IsVerified":true,"LastLogin":null,"UserType":"ClientUser"}
