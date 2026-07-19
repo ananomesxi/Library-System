@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Core.Exceptions;
 using Core.Models;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,102 +32,105 @@ namespace UI.Menus
             {
                 try
                 {
-                    Console.WriteLine("| ADMIN |");
-                    Console.WriteLine("1.  Show all books");
-                    Console.WriteLine("2.  Add book");
-                    Console.WriteLine("3.  Remove book");
-                    Console.WriteLine("4.  Manage book quantity");
-                    Console.WriteLine("5.  Show borrow requests");
-                    Console.WriteLine("6.  Show all users");
-                    Console.WriteLine("7.  Remove user");
-                    Console.WriteLine("8.  View overdue books");
-                    Console.WriteLine("9.  Send overdue notifications");
-                    Console.WriteLine("10. Log out");
-
-                    string userChoice = Console.ReadLine();
+                    string userChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[green]| ADMIN |[/]")
+                .AddChoices(
+                    "Show all books",
+                    "Add book",
+                    "Remove book",
+                    "Manage book quantity",
+                    "Show borrow requests",
+                    "Show all users",
+                    "Remove user",
+                    "View overdue books",
+                    "Send overdue notifications",
+                    "Log out"
+                ));
 
                     switch (userChoice)
                     {
-                        case "1":
+                        case "Show all books":
                             {
                                 _bookService.ShowAllBooks();
                                 break;
                             }
-                        case "2":
+
+                        case "Add book":
                             {
                                 _bookService.AddBook();
                                 break;
                             }
-                        case "3":
+
+                        case "Remove book":
                             {
                                 _bookService.RemoveBook();
                                 break;
                             }
-                        case "4":
+
+                        case "Manage book quantity":
                             {
                                 _bookService.ManageBookQuantity();
                                 break;
                             }
-                        case "5":
+
+                        case "Show borrow requests":
                             {
                                 _adminService.ManageBorrowRequests();
                                 break;
                             }
-                        case "6":
+
+                        case "Show all users":
                             {
                                 _userService.ShowAllUsers();
                                 break;
                             }
-                        case "7":
+
+                        case "Remove user":
                             {
                                 _userService.RemoveUser();
                                 break;
                             }
-                        case "8":
+
+                        case "View overdue books":
                             {
                                 _adminService.ViewOverdueBooks();
                                 break;
                             }
-                        case "9":
+
+                        case "Send overdue notifications":
                             {
                                 _adminService.SendOverdueNotifications();
                                 break;
                             }
-                        case "10":
+
+                        case "Log out":
                             {
                                 _authenticationService.LogoutUser(_currentAdmin.Email);
                                 return;
-                            }
-                        default:
-                            {
-                                throw new InvalidChoice();
                             }
                     }
 
                 }
                 catch (BookExists ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (BookNotFound ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (UserIdDoesNotExist ex)
                 {
-                    Console.WriteLine(ex.Message);
-                }
-                catch (InvalidChoice ex)
-                {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
             }
         }

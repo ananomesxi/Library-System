@@ -2,6 +2,7 @@
 using Application.Services;
 using Core.Exceptions;
 using Core.Models;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,89 +33,83 @@ namespace UI.Menus
             {
                 try
                 {
-                    Console.WriteLine("| Client |");
-                    Console.WriteLine("1. Show all books");
-                    Console.WriteLine("2. Find a book");
-                    Console.WriteLine("3. Borrow a book");
-                    Console.WriteLine("4. Return a book");
-                    Console.WriteLine("5. Show my books");
-                    Console.WriteLine("6. View my fine");
-                    Console.WriteLine("7. Logout");
-                    Console.Write("Choose an option: ");
-
-                    string userChoice = Console.ReadLine();
-                    if (String.IsNullOrWhiteSpace(userChoice))
-                    {
-                        throw new NullOrWhiteSpace();
-                    }
+                    string userChoice = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[green]| Client |[/]")
+                .AddChoices(
+                    "Show all books",
+                    "Find a book",
+                    "Borrow a book",
+                    "Return a book",
+                    "Show my books",
+                    "View my fine",
+                    "Logout"
+                ));
 
                     switch (userChoice)
                     {
-                        case "1":
+                        case "Show all books":
                             {
                                 _bookService.ShowAllBooks();
                                 break;
                             }
-                        case "2":
+
+                        case "Find a book":
                             {
                                 _bookService.FindABook();
                                 break;
                             }
-                        case "3":
+
+                        case "Borrow a book":
                             {
                                 _borrowService.BorrowRequest(_currentClient.Id);
                                 break;
                             }
-                        case "4":
+
+                        case "Return a book":
                             {
                                 _borrowService.ReturnABook(_currentClient.Id);
                                 break;
                             }
-                        case "5":
+
+                        case "Show my books":
                             {
                                 _borrowService.ShowBorrowedBooks(_currentClient.Id);
                                 break;
                             }
-                        case "6":
+
+                        case "View my fine":
                             {
                                 _clientService.ViewFine(_currentClient);
-                                return;
+                                break;
                             }
-                        case "7":
+
+                        case "Logout":
                             {
                                 _authenticationService.LogoutUser(_currentClient.Email);
                                 return;
                             }
-                        default:
-                            {
-                                throw new InvalidChoice();
-                            }
                     }
                 }
-                catch (InvalidChoice ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+
                 catch (NullOrWhiteSpace ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (BookNotFound ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
             }
         }
-
-      
 
         
     }

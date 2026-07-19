@@ -52,11 +52,9 @@ namespace Application.Services
             if (user.VerificationCode == verificationCode)
             {
                 user.IsVerified = true;
-                Console.WriteLine("Verification successful.");
                 _userRepository.UpdateUser(user);
                 return true;
             }
-            Console.WriteLine("Invalid verification code.");
             return false;
         }
 

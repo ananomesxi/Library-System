@@ -2,6 +2,7 @@
 using Application.Services;
 using Core.Exceptions;
 using Core.Models;
+using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,55 +35,41 @@ namespace UI.Menus
             {
                 try
                 {
-                    Console.WriteLine("Welcome back to the library!");
-                    Console.WriteLine("1. Register");
-                    Console.WriteLine("2. Login");
-                    Console.WriteLine("3. Exit");
-                    Console.Write("Choose an option: ");
-
-                    string userChoice = Console.ReadLine().Trim();
-                    if (String.IsNullOrWhiteSpace(userChoice))
-                    {
-                        throw new NullOrWhiteSpace();
-                    }
+                    string userChoice = AnsiConsole.Prompt(
+                        new SelectionPrompt<string>()
+                            .Title("Welcome back to the library!")
+                            .AddChoices(
+                                "Register",
+                                "Login",
+                                "Exit"
+                            ));
+                    
                     switch (userChoice)
                     {
-                        case "1":
-                            {
-                                EnterRegistrationInfo();
-                                break;
-                            }
-                        case "2":
-                            {
-                                EnterLoginInfo();
-                                break;
-                            }
-                        case "3":
-                            {
-                                Console.WriteLine("Operation has been closed. Exiting program.");
-                                return;
-                            }
-                        default:
-                            {
-                                throw new InvalidChoice();
-                            }
+                        case "Register":
+                            EnterRegistrationInfo();
+                            break;
+
+                        case "Login":
+                            EnterLoginInfo();
+                            break;
+
+                        case "Exit":
+                            return;
                     }
                 }
-                catch (InvalidChoice ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+
                 catch (UserEmailExists ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (UserEmailDoesNotExist ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Unexpected error: {ex.Message}");
+                    AnsiConsole.MarkupLine($"[red]Unexpected error: {ex.Message}[/]");
                 }
             }
         }
@@ -132,14 +119,14 @@ namespace UI.Menus
 
                 if (_authenticationService.VerifyUser(inputEmail, code))
                 {
-                    Console.WriteLine("Registration completed successfully.");
+                    AnsiConsole.MarkupLine("[green]Verification successful.[/]");
+                    AnsiConsole.MarkupLine("[green]Registration completed successfully.[/]");
                     return;
                 }
-
-                Console.WriteLine("Incorrect code.");
+                AnsiConsole.MarkupLine("[red]Invalid verification code.[/]");
             }
 
-            Console.WriteLine("Registration failed. Too many incorrect verification attempts.");
+            AnsiConsole.MarkupLine("[red]Registration failed. Too many incorrect verification attempts.[/]");
         }
 
     }
