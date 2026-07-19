@@ -10,10 +10,9 @@ namespace Repository
 {
     public class BookRepository : IBookRepository
     {
-        // აქ დიდი ალბათობით შევცვლი/ჩავამატებ რაღაცეებს. მთავარი ფუნქციონალის აგების პროცესში მივხვდები რა არის საჭირო
-        // თუმცა ჯერჯერობით იყოს ბაზად ეს
-
         private readonly string _booksPath = "D:\\Library System\\Repository\\Data\\Books.txt";
+
+
         public void AddBook(Book book)
         {
             if (BookExists(book.ISBN))

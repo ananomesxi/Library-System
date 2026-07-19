@@ -82,7 +82,8 @@ namespace Core.Models
         public string VerificationCode { get; set; } // არ სჭირდება ვალიდაცია, რენდომით ვქმნით ვერიფიკაციის კოდს
         public bool IsVerified { get; set; } = false;
         public DateTime? LastLogin { get; set; } // არც ამას სჭირდება ვალიდაცია
-       
+        public string UserType { get; set; }
+
 
     }
 }

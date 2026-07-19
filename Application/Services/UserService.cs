@@ -30,17 +30,21 @@ namespace Application.Services
                 throw new UserEmailExists();
             }
 
+            List<User> users = _userRepository.GetAllUsers();
+
             var newClientUser = new ClientUser
             {
+                Id = users.Count == 0 ? 1 : users.Max(u => u.Id) + 1,
                 Username = username,
                 Email = email,
                 Password = BCrypt.Net.BCrypt.HashPassword(password),
-                IsVerified = false
+                IsVerified = false,
+                UserType = "ClientUser"
             };
 
             _userRepository.AddUser(newClientUser);
         }
-        
+
         public void ShowAllUsers ()
         {
             List <User> users = _userRepository.GetAllUsers();

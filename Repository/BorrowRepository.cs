@@ -11,10 +11,8 @@ namespace Repository
 {
     public class BorrowRepository : IBorrowRepository
     {
-        // აქ დიდი ალბათობით შევცვლი/ჩავამატებ რაღაცეებს. მთავარი ფუნქციონალის აგების პროცესში მივხვდები რა არის საჭირო
-        // თუმცა ჯერჯერობით იყოს ბაზად ეს
-
         private readonly string _borrowPath = "D:\\Library System\\Repository\\Data\\BorrowRecord.txt";
+
         public void AddBorrowRecord(BorrowRecord borrowRecord)
         {
             string line = JsonSerializer.Serialize(borrowRecord);

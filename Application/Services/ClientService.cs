@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Application.Services
 {
-    public class ClientService
+    public class ClientService : IClientService
     {
         private readonly IBorrowRepository _borrowRepository;
         private readonly IUserRepository _userRepository;

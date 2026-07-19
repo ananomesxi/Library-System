@@ -10,18 +10,17 @@ namespace Repository
 {
     public class UserRepository : IUserRepository
     {
-        
 
-        private readonly string _usersPath = "D:\\Library System\\Repository\\Data\\Users.txt"; // ამას პროექტში როგორც კეთდება ისე გადავაკეთებ მერე.
+
+        private readonly string _usersPath = "D:\\Library System\\Repository\\Data\\Users.txt";
+
 
         public void AddUser(User user)
         {
-            List<User> users = GetAllUsers();
-            user.Id = users.Count() + 1;
-            string line = JsonSerializer.Serialize(user); // User user-ს ვაქცევთ string line-ად
-            File.AppendAllLines(_usersPath, new[] {line}); // ახალი ხაზი მივაწეროთ ფაილში
+            string json = JsonSerializer.Serialize(user, user.GetType());
+            File.AppendAllText(_usersPath, json + Environment.NewLine);
         }
-        
+
         public void DeleteUser(int id)
         {
             List<User> users = GetAllUsers();
@@ -37,21 +36,26 @@ namespace Repository
 
         public List<User> GetAllUsers()
         {
+            List<User> users = new();
             if (!File.Exists(_usersPath))
+                return users;
+            foreach (string line in File.ReadAllLines(_usersPath))
             {
-                return new List<User>(); // თუ ფაილი ვერ იპოვა ახალს შექმნის და დააბრუნებს
-            }
-            string[] lines = File.ReadAllLines(_usersPath);
-            
-
-            List<User> users = new List<User>();
-            foreach (string line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line)) // ხაზი შეიძლება გამოტოვებული/ცარიელი იყოს
+                using JsonDocument doc = JsonDocument.Parse(line);
+                string type = doc.RootElement.GetProperty("UserType").GetString();
+                User user;
+                if (type == "ClientUser")
+                {
+                    user = JsonSerializer.Deserialize<ClientUser>(line);
+                }
+                else if (type == "AdminUser")
+                {
+                    user = JsonSerializer.Deserialize<AdminUser>(line);
+                }
+                else
                 {
                     continue;
                 }
-                User user = JsonSerializer.Deserialize<ClientUser>(line); // string line-ს ვაქცევთ User user-ად
                 users.Add(user);
             }
             return users;
@@ -80,10 +84,15 @@ namespace Repository
 
         public void SaveChanges(List<User> users)
         {
-            File.Delete(_usersPath);
-            File.AppendAllLines(_usersPath, users.Select(u => JsonSerializer.Serialize(u)));
-        }
+            List<string> lines = new();
 
+            foreach (User user in users)
+            {
+                lines.Add(JsonSerializer.Serialize(user, user.GetType()));
+            }
+
+            File.WriteAllLines(_usersPath, lines);
+        }
         public void UpdateUser(User user)
         {
             List<User> users = GetAllUsers();

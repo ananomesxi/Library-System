@@ -32,38 +32,57 @@ namespace UI.Menus
 
             while (true)
             {
-                Console.WriteLine("Welcome back to the library!");
-                Console.WriteLine("1. Register");
-                Console.WriteLine("2. Login");
-                Console.WriteLine("3. Exit");
-                Console.Write("Choose an option: ");
+                try
+                {
+                    Console.WriteLine("Welcome back to the library!");
+                    Console.WriteLine("1. Register");
+                    Console.WriteLine("2. Login");
+                    Console.WriteLine("3. Exit");
+                    Console.Write("Choose an option: ");
 
-                string userChoice = Console.ReadLine().Trim();
-                if (String.IsNullOrWhiteSpace(userChoice))
-                {
-                    throw new NullOrWhiteSpace();
+                    string userChoice = Console.ReadLine().Trim();
+                    if (String.IsNullOrWhiteSpace(userChoice))
+                    {
+                        throw new NullOrWhiteSpace();
+                    }
+                    switch (userChoice)
+                    {
+                        case "1":
+                            {
+                                EnterRegistrationInfo();
+                                break;
+                            }
+                        case "2":
+                            {
+                                EnterLoginInfo();
+                                break;
+                            }
+                        case "3":
+                            {
+                                Console.WriteLine("Operation has been closed. Exiting program.");
+                                return;
+                            }
+                        default:
+                            {
+                                throw new InvalidChoice();
+                            }
+                    }
                 }
-                switch (userChoice)
+                catch (InvalidChoice ex)
                 {
-                    case "1":
-                        {
-                            EnterRegistrationInfo();
-                            break;
-                        }
-                    case "2":
-                        {
-                            EnterLoginInfo();
-                            break;
-                        }
-                    case "3":
-                        {
-                            Console.WriteLine("Operation has been closed. Exiting program.");
-                            return;
-                        }
-                    default:
-                        {
-                            throw new InvalidChoice();
-                        }
+                    Console.WriteLine(ex.Message);
+                }
+                catch (UserEmailExists ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (UserEmailDoesNotExist ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Unexpected error: {ex.Message}");
                 }
             }
         }
@@ -81,7 +100,7 @@ namespace UI.Menus
             if (user is ClientUser)
             {
                 _clientService.UpdateClientFine((ClientUser)user);
-                ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, _borrowService, (ClientUser)user);
+                ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, _borrowService, _clientService, (ClientUser)user);
                 clientMenu.Show();
             }
             else 
@@ -99,13 +118,29 @@ namespace UI.Menus
             Console.Write("Email: ");
             string inputEmail = Console.ReadLine();
 
-            Console.Write("password: ");
+            Console.Write("Password: ");
             string inputPassword = Console.ReadLine();
 
             _userService.RegisterUser(inputUsername, inputEmail, inputPassword);
 
-            Console.WriteLine("Registration has been completed successfully.");
+            _authenticationService.SendVerificationCode(inputEmail);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write("Enter verification code: ");
+                string code = Console.ReadLine();
+
+                if (_authenticationService.VerifyUser(inputEmail, code))
+                {
+                    Console.WriteLine("Registration completed successfully.");
+                    return;
+                }
+
+                Console.WriteLine("Incorrect code.");
+            }
+
+            Console.WriteLine("Registration failed. Too many incorrect verification attempts.");
         }
-        
+
     }
 }
