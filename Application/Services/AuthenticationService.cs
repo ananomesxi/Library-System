@@ -15,7 +15,7 @@ namespace Application.Services
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
 
-        private readonly string _loginHistoryPath = "D:\\Library System\\Core\\Logging\\LoginHistory.txt";
+        private readonly string _loginHistoryPath =Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Core","Logging","LoginHistory.txt"));
         public AuthenticationService(IUserRepository userRepository, IEmailService emailService)
         {
             _userRepository = userRepository;

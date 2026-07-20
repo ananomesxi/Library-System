@@ -12,7 +12,7 @@ namespace Repository
     {
 
 
-        private readonly string _usersPath = "D:\\Library System\\Repository\\Data\\Users.txt";
+        private readonly string _usersPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Repository","Data","Users.txt"));
 
 
         public void AddUser(User user)

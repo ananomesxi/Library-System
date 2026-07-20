@@ -11,7 +11,7 @@ namespace Repository
 {
     public class BorrowRepository : IBorrowRepository
     {
-        private readonly string _borrowPath = "D:\\Library System\\Repository\\Data\\BorrowRecord.txt";
+        private readonly string _borrowPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Repository","Data","BorrowRecord.txt"));
 
         public void AddBorrowRecord(BorrowRecord borrowRecord)
         {
