@@ -66,12 +66,18 @@ namespace Application.Services
             user.VerificationCode = code;
 
             _userRepository.UpdateUser(user);
-
-            _emailService.SendEmail(
-                email,
-                "Library Verification Code",
-                $"Your verification code is: {code}"
-            );
+            string body = $@"
+            <html>
+            <body>
+            <h2>Library Management System 📚</h2>
+            <p>Hello <b>{user.Username}</b>,</p>
+            <p>Your verification code is:</p>
+            <h1>{code}</h1>
+            <p>Enter this code to verify your account.</p>
+            <p>Best regards,<br>Library Management System</p>
+            </body>
+            </html>";
+            _emailService.SendEmail(email,"Library Verification Code",body);
         }
 
         public void LogoutUser (string email)

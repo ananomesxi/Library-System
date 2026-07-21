@@ -14,6 +14,7 @@ namespace Application.Services
             smtpClient.EnableSsl = true;
 
             MailMessage mailMessage = new MailMessage ("testemaillibrarysystem@gmail.com", to, subject, body);
+            mailMessage.IsBodyHtml = true;
             smtpClient.Send(mailMessage);
         }
     }
