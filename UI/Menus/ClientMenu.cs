@@ -38,7 +38,8 @@ namespace UI.Menus
                     "Return a book",
                     "Show my books",
                     "View my fine",
-                    "Logout"
+                    "Logout",
+                    "Change password"
                     ));
 
                     switch (userChoice)
@@ -46,51 +47,57 @@ namespace UI.Menus
                         case "Show all books":
                             {
                                 _bookService.ShowAllBooks();
-                                _userService.AddHistory(_currentClient, $"viewed all books");
+                                _userService.AddHistory(_currentClient, "viewed all books");
                                 break;
                             }
 
                         case "Find a book":
                             {
                                 _bookService.FindABook();
-                                _userService.AddHistory(_currentClient, $"searched a book");
+                                _userService.AddHistory(_currentClient, "searched a book");
                                 break;
                             }
 
                         case "Borrow a book":
                             {
                                 _borrowService.BorrowRequest(_currentClient.Id);
-                                _userService.AddHistory(_currentClient, $"requested to borrow a book");
+                                _userService.AddHistory(_currentClient, "requested to borrow a book");
                                 break;
                             }
 
                         case "Return a book":
                             {
                                 _borrowService.ReturnABook(_currentClient.Id);
-                                _userService.AddHistory(_currentClient, $"returned a book");
+                                _userService.AddHistory(_currentClient, "returned a book");
                                 break;
                             }
 
                         case "Show my books":
                             {
                                 _borrowService.ShowBorrowedBooks(_currentClient.Id);
-                                _userService.AddHistory(_currentClient, $"viewed their books");
+                                _userService.AddHistory(_currentClient, "viewed their books");
                                 break;
                             }
 
                         case "View my fine":
                             {
                                 _clientService.ViewFine(_currentClient);
-                                _userService.AddHistory(_currentClient, $"viewed their fine");
+                                _userService.AddHistory(_currentClient, "viewed their fine");
                                 break;
                             }
-
+                        case "Change password":
+                            {
+                                _userService.ChangePassword(_currentClient);
+                                _userService.AddHistory(_currentClient, "hanged their password");
+                                return;
+                            }
                         case "Logout":
                             {
                                 _authenticationService.LogoutUser(_currentClient.Email);
-                                _userService.AddHistory(_currentClient, $"Logged out");
+                                _userService.AddHistory(_currentClient, "logged out");
                                 return;
                             }
+                       
                     }
                 }
                 catch (NullOrWhiteSpace ex)
@@ -102,6 +109,10 @@ namespace UI.Menus
                     AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (FormatException ex)
+                {
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                }
+                catch (InvalidPassword ex)
                 {
                     AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }

@@ -3,3 +3,5 @@
 192.168.0.102 | admin removed a book at 21/7/2026
 192.168.0.102 | admin viewed borrow requests at 21/7/2026
 192.168.0.102 | admin Logged out at 21/7/2026
+192.168.0.102 | admin changed their password at 21/7/2026
+192.168.0.102 | admin changed their password at 21/7/2026

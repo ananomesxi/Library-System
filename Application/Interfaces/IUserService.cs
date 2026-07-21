@@ -12,6 +12,8 @@ namespace Application.Interfaces
         void RemoveUser();
         string GetUserIp();
         void AddHistory(User user, string message);
+        void ChangePassword(User currentUser);
+
 
     }
 }

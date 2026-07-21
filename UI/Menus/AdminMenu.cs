@@ -40,6 +40,7 @@ namespace UI.Menus
                     "Remove user",
                     "View overdue books",
                     "Send overdue notifications",
+                    "Change password",
                     "Log out"
                     ));
 
@@ -48,70 +49,76 @@ namespace UI.Menus
                         case "Show all books":
                             {
                                 _bookService.ShowAllBooks();
-                                _userService.AddHistory(_currentAdmin, $"viewed all books");
+                                _userService.AddHistory(_currentAdmin, "viewed all books");
                                 break;
                             }
 
                         case "Add book":
                             {
                                 _bookService.AddBook();
-                                _userService.AddHistory(_currentAdmin, $"added a books");
+                                _userService.AddHistory(_currentAdmin, "added a books");
                                 break;
                             }
 
                         case "Remove book":
                             {
                                 _bookService.RemoveBook();
-                                _userService.AddHistory(_currentAdmin, $"removed a book");
+                                _userService.AddHistory(_currentAdmin, "removed a book");
                                 break;
                             }
 
                         case "Manage book quantity":
                             {
                                 _bookService.ManageBookQuantity();
-                                _userService.AddHistory(_currentAdmin, $"managed book quantity");
+                                _userService.AddHistory(_currentAdmin, "managed book quantity");
                                 break;
                             }
 
                         case "Show borrow requests":
                             {
                                 _adminService.ManageBorrowRequests();
-                                _userService.AddHistory(_currentAdmin, $"viewed borrow requests");
+                                _userService.AddHistory(_currentAdmin, "viewed borrow requests");
                                 break;
                             }
 
                         case "Show all users":
                             {
                                 _userService.ShowAllUsers();
-                                _userService.AddHistory(_currentAdmin, $"viewed all users");
+                                _userService.AddHistory(_currentAdmin, "viewed all users");
                                 break;
                             }
 
                         case "Remove user":
                             {
                                 _userService.RemoveUser();
-                                _userService.AddHistory(_currentAdmin, $"removed a user");
+                                _userService.AddHistory(_currentAdmin, "removed a user");
                                 break;
                             }
 
                         case "View overdue books":
                             {
                                 _adminService.ViewOverdueBooks();
-                                _userService.AddHistory(_currentAdmin, $"viewed overdue books");
+                                _userService.AddHistory(_currentAdmin, "viewed overdue books");
                                 break;
                             }
 
                         case "Send overdue notifications":
                             {
                                 _adminService.SendOverdueNotifications();
-                                _userService.AddHistory(_currentAdmin, $"sent overdue notifications");
+                                _userService.AddHistory(_currentAdmin, "sent overdue notifications");
                                 break;
                             }
 
+                        case "Change password":
+                            {
+                                _userService.ChangePassword(_currentAdmin);
+                                _userService.AddHistory(_currentAdmin, "changed their password");
+                                return;
+                            }
                         case "Log out":
                             {
                                 _authenticationService.LogoutUser(_currentAdmin.Email);
-                                _userService.AddHistory(_currentAdmin, $"Logged out");
+                                _userService.AddHistory(_currentAdmin, "logged out");
                                 return;
                             }
                     }
@@ -129,6 +136,10 @@ namespace UI.Menus
                     AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }
                 catch (FormatException ex)
+                {
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                }
+                catch (InvalidPassword ex)
                 {
                     AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
                 }

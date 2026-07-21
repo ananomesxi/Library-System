@@ -100,6 +100,29 @@ namespace Application.Services
         {
             File.AppendAllLines(_historyPath,new[] { $"{GetUserIp()} | {user.Username} {message} at {DateTime.Now:d/M/yyyy}" });
         }
+        public void ChangePassword(User currentUser)
+        {
+            Console.Write("Enter current password: ");
+            string currentPassword = Console.ReadLine();
+            if (!BCrypt.Net.BCrypt.Verify(currentPassword, currentUser.Password))
+            {
+                throw new InvalidPassword();
+            }
+            Console.Write("Enter new password: ");
+            string newPassword = Console.ReadLine();
 
+            Console.Write("Confirm new password: ");
+            string confirmPassword = Console.ReadLine();
+
+            if (newPassword != confirmPassword)
+            {
+                Console.WriteLine("Passwords do not match.");
+                return;
+            }
+
+            currentUser.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            _userRepository.UpdateUser(currentUser);
+            Console.WriteLine("Password changed successfully.");
+        }
     }
 }
