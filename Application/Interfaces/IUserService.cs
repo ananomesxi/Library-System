@@ -10,7 +10,8 @@ namespace Application.Interfaces
         void RegisterUser(string username, string email, string password);
         void ShowAllUsers();
         void RemoveUser();
-
+        string GetUserIp();
+        void AddHistory(User user, string message);
 
     }
 }

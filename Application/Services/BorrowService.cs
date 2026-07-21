@@ -3,14 +3,12 @@ using Core.Enums;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.Services
 {
     public class BorrowService : IBorrowService
     {
+        #region DI
         private readonly IBookService _bookService;
         private readonly IBorrowRepository _borrowRepository;
         private readonly IBookRepository _bookRepository;
@@ -22,7 +20,7 @@ namespace Application.Services
             _bookRepository = bookRepository;
             _userRepository = userRepository;
         }
-
+        #endregion
         public void BorrowRequest(int userId)
         {
             User user = _userRepository.GetUserById(userId);

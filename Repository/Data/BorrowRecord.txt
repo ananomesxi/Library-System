@@ -1,0 +1,1 @@
+{"BorrowID":1,"UserID":2,"ISBN":"3","ReturnDate":"2026-08-21T21:15:33.9443614+04:00","Status":0}

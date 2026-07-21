@@ -1,16 +1,13 @@
 ﻿using Application.Interfaces;
-using Application.Services;
 using Core.Exceptions;
 using Core.Models;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace UI.Menus
 {
     public class MainMenu
     {
+        #region DI
         private readonly IAuthenticationService _authenticationService;
         private readonly IBookService _bookService;
         private readonly IBorrowService _borrowService;
@@ -26,23 +23,19 @@ namespace UI.Menus
             _userService = userService;
             _adminService = adminService;
         }
-
+        #endregion
         public void Show()
         {
-            
 
             while (true)
             {
                 try
                 {
-                    string userChoice = AnsiConsole.Prompt(
-                        new SelectionPrompt<string>()
-                            .Title("Welcome back to the library!")
-                            .AddChoices(
-                                "Register",
-                                "Login",
-                                "Exit"
-                            ));
+                    string userChoice = AnsiConsole.Prompt(new SelectionPrompt<string>().Title("Welcome back to the library!").AddChoices(
+                    "Register",
+                    "Login",
+                    "Exit"
+                    ));
                     
                     switch (userChoice)
                     {
@@ -87,7 +80,7 @@ namespace UI.Menus
             if (user is ClientUser)
             {
                 _clientService.UpdateClientFine((ClientUser)user);
-                ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, _borrowService, _clientService, (ClientUser)user);
+                ClientMenu clientMenu = new ClientMenu(_authenticationService, _bookService, _borrowService, _clientService, _userService, (ClientUser)user);
                 clientMenu.Show();
             }
             else 

@@ -11,7 +11,6 @@ namespace Application.Interfaces
         void SendVerificationCode(string email);
         bool VerifyUser(string email, string verificationCode);
         void LogoutUser(string email);
-        string GetUserIp();
 
     }
 }

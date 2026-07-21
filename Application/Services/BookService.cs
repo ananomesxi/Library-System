@@ -2,23 +2,19 @@
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel.Design;
-using System.Text;
-using System.Threading.Channels;
 
 namespace Application.Services
 {
     public class BookService : IBookService
     {
+        #region DI
         private readonly IBookRepository _bookRepository;
 
         public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
+        #endregion
 
         public void ShowAllBooks()
         {

@@ -1,19 +1,13 @@
 ﻿using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace Repository
 {
     public class UserRepository : IUserRepository
     {
-
-
         private readonly string _usersPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Repository","Data","Users.txt"));
-
 
         public void AddUser(User user)
         {

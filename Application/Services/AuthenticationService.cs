@@ -2,27 +2,24 @@
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace Application.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        #region DI
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
 
-        private readonly string _loginHistoryPath =Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Core","Logging","LoginHistory.txt"));
+        
         public AuthenticationService(IUserRepository userRepository, IEmailService emailService)
         {
             _userRepository = userRepository;
             _emailService = emailService;
         }
-
-        
+        #endregion
 
         public User LoginUser(string email, string password)
         {
@@ -33,8 +30,6 @@ namespace Application.Services
                 {
                     user.LastLogin = DateTime.Now;
                     _userRepository.UpdateUser(user);
-                    
-                    File.AppendAllLines(_loginHistoryPath, new[] { $"{user.Username} logged in at {user.LastLogin} from {GetUserIp()}" });
                     return user;
                 }
             }
@@ -86,17 +81,8 @@ namespace Application.Services
             _userRepository.UpdateUser(user);
         }
 
-        public string GetUserIp()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            return string.Empty;
-        }
+        
+
+        
     }
 }

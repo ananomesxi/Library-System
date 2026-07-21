@@ -2,14 +2,11 @@
 using Core.Enums;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Application.Services
 {
     public class ClientService : IClientService
     {
+        #region DI
         private readonly IBorrowRepository _borrowRepository;
         private readonly IUserRepository _userRepository;
         public ClientService(IBorrowRepository borrowRepository, IUserRepository userRepository)
@@ -17,6 +14,7 @@ namespace Application.Services
             _borrowRepository = borrowRepository;
             _userRepository = userRepository;
         }
+        #endregion
         public void UpdateClientFine(ClientUser client)
         {
             List<BorrowRecord> borrowedBooks = _borrowRepository.GetAllBorrowRecords().Where(b => b.UserID == client.Id 

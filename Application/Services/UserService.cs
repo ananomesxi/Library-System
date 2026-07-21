@@ -3,23 +3,21 @@ using Core.Enums;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Transactions;
 
 namespace Application.Services
 {
     public class UserService : IUserService
     {
+        #region DI
         private readonly IUserRepository _userRepository;
-
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
+        private readonly string _historyPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "Core", "Logging", "History.txt"));
+        #endregion
 
         public void RegisterUser(string username, string email, string password)
         {
@@ -85,7 +83,23 @@ namespace Application.Services
             _userRepository.DeleteUser(userId);
             Console.WriteLine("User has been removed.");
         }
-        
+        public string GetUserIp()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return string.Empty;
+        }
+
+        public void AddHistory(User user, string message)
+        {
+            File.AppendAllLines(_historyPath,new[] { $"{GetUserIp()} | {user.Username} {message} at {DateTime.Now:d/M/yyyy}" });
+        }
 
     }
 }

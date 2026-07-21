@@ -10,8 +10,7 @@ namespace Repository
 {
     public class BookRepository : IBookRepository
     {
-        private readonly string _booksPath =Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Repository","Data","Books.txt"));
-
+        private readonly string _booksPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"..", "..", "..", "..","Repository","Data","Books.txt"));
 
         public void AddBook(Book book)
         {

@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Services;
 using Core.Interfaces;
-using Core.Models;
 using Repository;
 using UI.Menus;
 
@@ -11,7 +10,7 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            
+     
             try
             {
                 #region Repositories
@@ -22,17 +21,11 @@ namespace UI
 
                 #region Services
                 IEmailService emailService = new EmailService();
-
                 IAuthenticationService authenticationService = new AuthenticationService(userRepository, emailService);
-
                 IUserService userService = new UserService(userRepository);
-
                 IBookService bookService = new BookService(bookRepository);
-
                 IBorrowService borrowService = new BorrowService(bookService, borrowRepository, bookRepository, userRepository);
-
                 IClientService clientService = new ClientService(borrowRepository, userRepository);
-
                 IAdminService adminService = new AdminService(borrowRepository, bookRepository, userRepository, emailService);
                 #endregion
 

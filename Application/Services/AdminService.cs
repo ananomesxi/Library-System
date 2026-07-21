@@ -3,14 +3,12 @@ using Core.Enums;
 using Core.Exceptions;
 using Core.Interfaces;
 using Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Application.Services
 {
     public class AdminService : IAdminService
     {
+        #region DI
         private readonly IBorrowRepository _borrowRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IUserRepository _userRepository;
@@ -22,6 +20,7 @@ namespace Application.Services
             _userRepository = userRepository;
             _emailService = emailService;
         }
+        #endregion
         public void ShowBorrowRequests()
         {
             List<BorrowRecord> borrowRequests = _borrowRepository.GetAllBorrowRecords().Where(x => x.Status == BorrowStatus.Pending).ToList();
@@ -144,8 +143,7 @@ namespace Application.Services
                     continue;
                 }
                 int lateDays = (DateTime.Now.Date - record.ReturnDate.Date).Days;
-                _emailService.SendEmail(user.Email, "Overdue Book", $"The book '{book.Title}' is overdue by {lateDays} days. Please return it."
-                );
+                _emailService.SendEmail(user.Email, "Overdue Book", $"The book '{book.Title}' is overdue by {lateDays} days. Please return it.");
                 Console.WriteLine($"Notification sent to {user.Username}.");
             }
         }
