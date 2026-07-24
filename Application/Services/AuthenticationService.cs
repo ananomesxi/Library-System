@@ -87,8 +87,5 @@ namespace Application.Services
             _userRepository.UpdateUser(user);
         }
 
-        
-
-        
     }
 }
